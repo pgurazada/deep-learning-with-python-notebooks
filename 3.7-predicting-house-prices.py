@@ -229,7 +229,7 @@ from keras import backend as K
 K.clear_session()
 
 
-# In[ ]:
+# In[12]:
 
 
 num_epochs = 500
@@ -262,7 +262,7 @@ for i in range(k):
 
 # We can then compute the average of the per-epoch MAE scores for all folds:
 
-# In[ ]:
+# In[15]:
 
 
 average_mae_history = [
@@ -271,7 +271,7 @@ average_mae_history = [
 
 # Let's plot this:
 
-# In[ ]:
+# In[16]:
 
 
 import matplotlib.pyplot as plt
@@ -288,7 +288,7 @@ plt.show()
 # * Omit the first 10 data points, which are on a different scale from the rest of the curve.
 # * Replace each point with an exponential moving average of the previous points, to obtain a smooth curve.
 
-# In[ ]:
+# In[17]:
 
 
 def smooth_curve(points, factor=0.9):
@@ -315,7 +315,7 @@ plt.show()
 # Once we are done tuning other parameters of our model (besides the number of epochs, we could also adjust the size of the hidden layers), we 
 # can train a final "production" model on all of the training data, with the best parameters, then look at its performance on the test data:
 
-# In[ ]:
+# In[18]:
 
 
 # Get a fresh, compiled model.
@@ -326,7 +326,7 @@ model.fit(train_data, train_targets,
 test_mse_score, test_mae_score = model.evaluate(test_data, test_targets)
 
 
-# In[ ]:
+# In[19]:
 
 
 test_mae_score
