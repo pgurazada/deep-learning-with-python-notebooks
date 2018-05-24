@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[35]:
 
 
 import keras
@@ -36,7 +36,7 @@ keras.__version__
 # 
 # Let's take a look at the data:
 
-# In[2]:
+# In[36]:
 
 
 from keras.datasets import boston_housing
@@ -44,13 +44,13 @@ from keras.datasets import boston_housing
 (train_data, train_targets), (test_data, test_targets) =  boston_housing.load_data()
 
 
-# In[3]:
+# In[37]:
 
 
 train_data.shape
 
 
-# In[4]:
+# In[38]:
 
 
 test_data.shape
@@ -76,19 +76,19 @@ test_data.shape
 # 
 # The targets are the median values of owner-occupied homes, in thousands of dollars:
 
-# In[7]:
+# In[39]:
 
 
 len(train_data[1])
 
 
-# In[12]:
+# In[40]:
 
 
 train_data[1]
 
 
-# In[ ]:
+# In[41]:
 
 
 train_targets
@@ -107,55 +107,31 @@ train_targets
 # will subtract the mean of the feature and divide by the standard deviation, so that the feature will be centered around 0 and will have a 
 # unit standard deviation. This is easily done in Numpy:
 
-# In[8]:
+# In[54]:
 
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, Normalizer
 
 
-# In[13]:
+# In[55]:
 
 
-scaler = StandardScaler()
+scaler = Normalizer()
 
 
-# In[14]:
+# In[60]:
 
 
-train_sk = scaler.fit_transform(train_data)
+train_data = scaler.fit_transform(train_data)
 
 
-# In[15]:
+# In[61]:
 
 
-train_sk[1]
+test_data = scaler.fit_transform(test_data)
 
 
-# In[20]:
-
-
-test_sk = scaler.fit_transform(test_data)
-
-
-# In[21]:
-
-
-test_sk[1]
-
-
-# In[28]:
-
-
-train_sk.mean(axis = 0)
-
-
-# In[29]:
-
-
-train_sk.std(axis=0)
-
-
-# In[30]:
+# In[48]:
 
 
 mean = train_data.mean(axis=0)
@@ -167,28 +143,22 @@ test_data -= mean
 test_data /= std
 
 
-# In[31]:
-
-
-train_data.mean(axis = 0)
-
-
-# In[32]:
-
-
-train_data.std(axis = 0)
-
-
-# In[33]:
+# In[49]:
 
 
 train_data[1]
 
 
-# In[34]:
+# In[50]:
 
 
-train_sk[1]
+test_data[1]
+
+
+# In[52]:
+
+
+test_sk[1] - test_data[1]
 
 
 # Note that the quantities that we use for normalizing the test data have been computed using the training data. We should never use in our 
@@ -201,7 +171,7 @@ train_sk[1]
 # hidden layers, each with 64 units. In general, the less training data you have, the worse overfitting will be, and using 
 # a small network is one way to mitigate overfitting.
 
-# In[ ]:
+# In[59]:
 
 
 from keras import models
@@ -249,7 +219,7 @@ def build_model():
 
 # In terms of code, this is straightforward:
 
-# In[ ]:
+# In[62]:
 
 
 import numpy as np
@@ -284,13 +254,13 @@ for i in range(k):
     all_scores.append(val_mae)
 
 
-# In[ ]:
+# In[63]:
 
 
 all_scores
 
 
-# In[ ]:
+# In[64]:
 
 
 np.mean(all_scores)
