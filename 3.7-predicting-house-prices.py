@@ -76,7 +76,19 @@ test_data.shape
 # 
 # The targets are the median values of owner-occupied homes, in thousands of dollars:
 
-# In[5]:
+# In[7]:
+
+
+len(train_data[1])
+
+
+# In[12]:
+
+
+train_data[1]
+
+
+# In[ ]:
 
 
 train_targets
@@ -95,7 +107,55 @@ train_targets
 # will subtract the mean of the feature and divide by the standard deviation, so that the feature will be centered around 0 and will have a 
 # unit standard deviation. This is easily done in Numpy:
 
-# In[6]:
+# In[8]:
+
+
+from sklearn.preprocessing import StandardScaler
+
+
+# In[13]:
+
+
+scaler = StandardScaler()
+
+
+# In[14]:
+
+
+train_sk = scaler.fit_transform(train_data)
+
+
+# In[15]:
+
+
+train_sk[1]
+
+
+# In[20]:
+
+
+test_sk = scaler.fit_transform(test_data)
+
+
+# In[21]:
+
+
+test_sk[1]
+
+
+# In[28]:
+
+
+train_sk.mean(axis = 0)
+
+
+# In[29]:
+
+
+train_sk.std(axis=0)
+
+
+# In[30]:
 
 
 mean = train_data.mean(axis=0)
@@ -105,6 +165,30 @@ train_data /= std
 
 test_data -= mean
 test_data /= std
+
+
+# In[31]:
+
+
+train_data.mean(axis = 0)
+
+
+# In[32]:
+
+
+train_data.std(axis = 0)
+
+
+# In[33]:
+
+
+train_data[1]
+
+
+# In[34]:
+
+
+train_sk[1]
 
 
 # Note that the quantities that we use for normalizing the test data have been computed using the training data. We should never use in our 
@@ -117,7 +201,7 @@ test_data /= std
 # hidden layers, each with 64 units. In general, the less training data you have, the worse overfitting will be, and using 
 # a small network is one way to mitigate overfitting.
 
-# In[7]:
+# In[ ]:
 
 
 from keras import models
@@ -165,7 +249,7 @@ def build_model():
 
 # In terms of code, this is straightforward:
 
-# In[8]:
+# In[ ]:
 
 
 import numpy as np
@@ -200,13 +284,13 @@ for i in range(k):
     all_scores.append(val_mae)
 
 
-# In[9]:
+# In[ ]:
 
 
 all_scores
 
 
-# In[10]:
+# In[ ]:
 
 
 np.mean(all_scores)
@@ -220,7 +304,7 @@ np.mean(all_scores)
 # Let's try training the network for a bit longer: 500 epochs. To keep a record of how well the model did at each epoch, we will modify our training loop 
 # to save the per-epoch validation score log:
 
-# In[11]:
+# In[ ]:
 
 
 from keras import backend as K
@@ -229,7 +313,7 @@ from keras import backend as K
 K.clear_session()
 
 
-# In[12]:
+# In[ ]:
 
 
 num_epochs = 500
@@ -262,7 +346,7 @@ for i in range(k):
 
 # We can then compute the average of the per-epoch MAE scores for all folds:
 
-# In[15]:
+# In[ ]:
 
 
 average_mae_history = [
@@ -271,7 +355,7 @@ average_mae_history = [
 
 # Let's plot this:
 
-# In[16]:
+# In[ ]:
 
 
 import matplotlib.pyplot as plt
@@ -288,7 +372,7 @@ plt.show()
 # * Omit the first 10 data points, which are on a different scale from the rest of the curve.
 # * Replace each point with an exponential moving average of the previous points, to obtain a smooth curve.
 
-# In[17]:
+# In[ ]:
 
 
 def smooth_curve(points, factor=0.9):
@@ -315,7 +399,7 @@ plt.show()
 # Once we are done tuning other parameters of our model (besides the number of epochs, we could also adjust the size of the hidden layers), we 
 # can train a final "production" model on all of the training data, with the best parameters, then look at its performance on the test data:
 
-# In[18]:
+# In[ ]:
 
 
 # Get a fresh, compiled model.
@@ -326,7 +410,7 @@ model.fit(train_data, train_targets,
 test_mse_score, test_mae_score = model.evaluate(test_data, test_targets)
 
 
-# In[19]:
+# In[ ]:
 
 
 test_mae_score
